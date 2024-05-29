@@ -57,11 +57,19 @@ plot(test,
 
 #highcharter plot
 df <- igraph::as_data_frame(test, what = "edges")
-highchartzero() %>% 
+highchartzero() %>%
+  hc_title(text = 'Companion Plants') %>%
+  hc_subtitle(text = 'Sample Data') %>%
+  hc_plotOptions(networkgraph = list(
+    keys = c('from', 'to'),
+    layoutAlgorithm = list(enableSimulation =  TRUE, friction = -0.9)
+    )) %>% 
   hc_add_series(
     df, 
     "networkgraph",
+    dataLabels = list(enabled = TRUE, linkFormat = ''),
     hcaes(from = from, to = to, weight = weight),
     layoutAlgorithm = list(enableSimulation = TRUE)
   ) %>% 
-  hc_add_dependency("modules/networkgraph.js")
+  hc_add_dependency("modules/networkgraph.js") %>%
+  hc_exporting(enabled = TRUE)
